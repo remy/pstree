@@ -1,7 +1,7 @@
 const tap = require('tap');
 const test = tap.test;
 const readFile = require('fs').readFileSync;
-const { spawn } = require('child_process');
+const spawn = require('child_process').spawn;
 const pstree = require('../');
 const { tree, pidsForTree, getStat } = require('../lib/utils');
 
