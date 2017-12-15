@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "lib/index.js",
   "scripts": {
-    "test": "tap tests/*.test.js"
+    "test": "NO_PS=1 tap tests/*.test.js"
   },
   "keywords": ["ps", "pstree", "ps tree"],
   "author": "Remy Sharp",

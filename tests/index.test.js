@@ -30,7 +30,9 @@ test('can read full child process tree', t => {
     const pid = subprocess.pid;
     pstree(pid, (error, children) => {
       t.pass('worked');
-      console.log(children);
+      children.concat({ PID: pid }).forEach(p => {
+        spawn('kill', ['-s', 'SIGTERM', p.PID]);
+      });
       t.end();
     });
   }, 500);
