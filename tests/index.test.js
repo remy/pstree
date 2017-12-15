@@ -1,20 +1,18 @@
 const tap = require('tap');
 const test = tap.test;
-const { promisify } = require('util');
-const readFile = promisify(require('fs').readFile);
+const readFile = require('fs').readFileSync;
 const { spawn } = require('child_process');
 const pstree = require('../');
-const { tree, pidsForTree } = require('../lib/utils');
+const { tree, pidsForTree, getStat } = require('../lib/utils');
 
-// test('constructs a tree', async t => {
-//   const fixture = await readFile(__dirname + '/fixtures/out1', 'utf8');
-//   const ps = await tree(fixture);
-//   t.deepEqual(pidsForTree(ps, 27).map(_ => _.PID), ['28', '39']);
-// });
+tap.test('reads from /proc', async t => {
+  const ps = await getStat();
+  t.ok(ps.split('\n').length > 1);
+});
 
 test('tree for live env', async t => {
   const pid = 4079;
-  const fixture = await readFile(__dirname + '/fixtures/out2', 'utf8');
+  const fixture = readFile(__dirname + '/fixtures/out2', 'utf8');
   const ps = await tree(fixture);
   t.deepEqual(pidsForTree(ps, pid).map(_ => _.PID), ['4080']);
 });
@@ -29,7 +27,7 @@ test('can read full child process tree', t => {
       }, 200);"`,
     ],
     {
-      stdio: ['inherit', 'inherit', 'inherit'],
+      stdio: 'pipe',
     }
   );
 
