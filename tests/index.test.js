@@ -25,13 +25,15 @@ test('can read full child process tree', t => {
     [
       '-c',
       `node -e "setInterval(() => {
-        console.log(sub.pid, process.pid, 'is alive')
+        console.log(process.pid, 'is alive')
       }, 200);"`,
     ],
     {
       stdio: ['inherit', 'inherit', 'inherit'],
     }
   );
+
+  console.log('parent at %s', sub.pid);
 
   setTimeout(() => {
     const pid = sub.pid;
