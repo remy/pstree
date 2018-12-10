@@ -24,14 +24,14 @@ test('can read full child process tree', t => {
     stdio: 'pipe',
   });
   setTimeout(() => {
-    const pid = process.pid;
+    const pid = sub.pid;
 
     pstree(pid, (error, children) => {
       children.forEach(p => {
         spawn('kill', ['-s', 'SIGTERM', p]);
       });
 
-      t.equal(children.length, 2);
+      t.equal(children.length, 1);
       t.end();
     });
   }, 1000);
