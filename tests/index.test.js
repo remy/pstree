@@ -27,11 +27,13 @@ test('can read full child process tree', t => {
     const pid = sub.pid;
 
     pstree(pid, (error, children) => {
-      children.forEach(p => {
+      children.concat([pid]).forEach(p => {
         spawn('kill', ['-s', 'SIGTERM', p]);
       });
 
-      t.equal(children.length, 1);
+      console.log(children);
+
+      t.equal(children.length, 2);
       t.end();
     });
   }, 1000);
