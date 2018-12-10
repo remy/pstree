@@ -1,9 +1,9 @@
 {
   "name": "pstree.remy",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "main": "lib/index.js",
   "scripts": {
-    "test": "NO_PS=1 tap tests/*.test.js"
+    "test": "tap tests/*.test.js"
   },
   "keywords": [
     "ps",
