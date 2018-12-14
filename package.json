@@ -3,7 +3,8 @@
   "version": "1.1.6",
   "main": "lib/index.js",
   "scripts": {
-    "test": "tap tests/*.test.js"
+    "test": "tap tests/*.test.js",
+    "prepublish": "npm test"
   },
   "keywords": [
     "ps",
