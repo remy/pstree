@@ -5,7 +5,7 @@ const spawn = require('child_process').spawn;
 const pstree = require('../');
 const { tree, pidsForTree, getStat } = require('../lib/utils');
 
-if (process.platform !== 'darwin') {
+if (process.platform !== 'darwin' && process.platform !== 'os390') {
   test('reads from /proc', async t => {
     const ps = await getStat();
     t.ok(ps.split('\n').length > 1);
