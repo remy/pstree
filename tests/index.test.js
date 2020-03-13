@@ -33,7 +33,7 @@ test('can read full child process tree', t => {
 
       console.log(children);
 
-      t.equal(children.length, 2);
+      t.equal(children.length, 4);
       t.end();
     });
   }, 1000);
