@@ -9,5 +9,5 @@ function run() {
   );
 }
 
-run();
-run();
+var runCallCount = process.argv[2] || 1;
+for (var i = 0; i < runCallCount; i++) run();
