@@ -19,8 +19,8 @@ test('tree for live env', async t => {
   t.deepEqual(pidsForTree(ps, pid).map(_ => _.PID), ['4080']);
 });
 
-test('can read full child process tree', t => {
-  const sub = spawn('node', [`${__dirname}/fixtures/index.js`], {
+function testTree (t, runCallCount) {
+  const sub = spawn('node', [`${__dirname}/fixtures/index.js`, runCallCount], {
     stdio: 'pipe',
   });
   setTimeout(() => {
@@ -31,10 +31,14 @@ test('can read full child process tree', t => {
         spawn('kill', ['-s', 'SIGTERM', p]);
       });
 
-      console.log(children);
-
-      t.equal(children.length, 2);
+      // the fixture launches two processes on each call to run, hence the expected
+      // number of children is two times bigger than the number of run() calls
+      t.equal(children.length, runCallCount * 2); 
       t.end();
     });
   }, 1000);
-});
+
+}
+
+test('can read full child process tree', t => { testTree(t, 1) })
+test('can read full child process tree with multiple children', t => { testTree(t, 2) })
