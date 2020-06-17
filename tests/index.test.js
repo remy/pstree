@@ -4,9 +4,11 @@ const readFile = require('fs').readFileSync;
 const spawn = require('child_process').spawn;
 const pstree = require('../');
 const { tree, pidsForTree, getStat } = require('../lib/utils');
+const isZOS = process.platform === 'os390' ? true : false;
 
 if (process.platform !== 'darwin') {
-  test('reads from /proc', async t => {
+  const testMsg = isZOS ? 'reads from ps' : 'reads from /proc';
+  test(testMsg, async t => {
     const ps = await getStat();
     t.ok(ps.split('\n').length > 1);
   });
@@ -14,9 +16,20 @@ if (process.platform !== 'darwin') {
 
 test('tree for live env', async t => {
   const pid = 4079;
-  const fixture = readFile(__dirname + '/fixtures/out2', 'utf8');
+  const fixname = isZOS ? 'fixtures/out2.os390' : 'fixtures/out2';
+  const fixture = readFile(__dirname + '/' + fixname, 'utf8');
   const ps = await tree(fixture);
-  t.deepEqual(pidsForTree(ps, pid).map(_ => _.PID), ['4080']);
+  if (!isZOS) {
+    t.deepEqual(pidsForTree(ps, pid).map(_ => _.PID), ['4080']);
+  } else {
+    t.deepEqual(pidsForTree(ps, pid).map(_ => _.PID), ['67110338',
+                                                       '33557612',
+                                                       '16779878',
+                                                       '50334588',
+                                                       '16779926',
+                                                       '1763',
+                                                       '43' ]);
+  }
 });
 
 function testTree (t, runCallCount) {
